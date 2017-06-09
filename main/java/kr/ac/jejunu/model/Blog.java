@@ -22,6 +22,7 @@ public class Blog {
     private String content;
     private Date date;
 
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

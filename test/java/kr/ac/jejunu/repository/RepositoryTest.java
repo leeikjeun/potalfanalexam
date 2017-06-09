@@ -6,18 +6,18 @@ package kr.ac.jejunu.repository;
 
 
 
-import kr.ac.jejunu.Application;
-import kr.ac.jejunu.Hello;
-import kr.ac.jejunu.HelloImpl;
 import kr.ac.jejunu.model.Blog;
 import kr.ac.jejunu.model.Catalog;
+import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -70,12 +70,55 @@ public class RepositoryTest {
     @Test
     public void createBlog(){
         Blog blog = new Blog();
-        blog.
+        Date date = new Date();
+        Catalog catalog = catalogRepository.findOne(1);
+        blog.setCatalog(catalog);
+        blog.setContent("밥먹쟈 test");
+        blog.setTitle("밥먹자 test");
+        User user = userRepository.findOne(1);
+        blog.setUser(user);
+        blog.setDate(date);
+
+        Blog check = blogRepository.save(blog);
+        int id = check.getId();
+        Blog returnBlog = blogRepository.findOne(id);
+        assertThat(returnBlog.getId(),is(id));
+        assertThat(returnBlog.getCatalog().getName(),is(catalog.getName()));
+        assertThat(returnBlog.getContent(),is("밥먹쟈 test"));
+        assertThat(returnBlog.getTitle(),is("밥먹자 test"));
+        assertThat(returnBlog.getUser().getName(),is(user.getName()));
 
     }
 
     @Test
     public void createComment(){
+
+        Comment comment = new Comment();
+        comment.setTitle("test title");
+        comment.setContent("test content");
+        comment.setBlog(blogRepository.findOne(1));
+        comment.setDateComment(new Date());
+
+        int id = commentRepository.save(comment).getId();
+        Comment check = commentRepository.findOne(id);
+
+        assertThat(check.getId(),is(id));
+        assertThat(check.getTitle(),is(comment.getTitle()));
+        assertThat(check.getContent(),is(comment.getContent()));
+        assertThat(check.getBlog().getId(),is(comment.getBlog().getId()));
+//        assertThat(check.getDateComment(),is(comment.getDateComment())); 시간이 잘들어가나 출력되면 값이 봐꾸네;; 어케 해야하지?
+    }
+
+    @Test
+    public void checkFindBlogOnCatalogId(){
+        Catalog catalog = new Catalog();
+        catalog.setId(1);
+        catalog.setName("test");
+        List<Blog> blogs = blogRepository.findByCatalog(catalog);
+
+        for(Blog blog : blogs){
+            System.out.println(blog.getContent());
+        }
 
     }
 

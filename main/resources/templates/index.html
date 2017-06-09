@@ -1,10 +1,84 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+
+      >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Blog</title>
+    <link href="/reset.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/base.css" rel="stylesheet" type="text/css" media="all" />
+    <style media="screen">
+    .title{
+      height: 55px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .main-menu{
+      height: 55px;
+    }
+
+    .main-menu li{
+      margin-left: 10px;
+      transition: all 0.5s;
+    }
+
+    .main-menu li:hover{
+      background-color: #e1e1e1;
+    }
+
+    a{
+      text-decoration: none;
+      color: black;
+    }
+
+    .content-box{
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .content{
+      width: 75%;
+    }
+
+    .side-menu{
+      width: 25%;
+    }
+
+    </style>
 </head>
 <body>
+  <header class="base-size">
+    <div class="row">
+      <h3 class="title"><a href="/index">이익전의 블로그</a></h3>
+      <ul class="main-menu">
+        <li><a href="#">로그인</a></li>
+        <li><a href="#">회원가입</a></li>
+      </ul>
+    </div>
+  </header>
+  <div class="base-size">
+    <div class="content-box">
+      <div class="content">
+        <ul>
+          <li><a href="#">첫번째 카테고리 리스트</a></li>
+          <li><a href="#">첫번째 카테고리 리스트</a></li>
+          <li><a href="#">첫번째 카테고리 리스트</a></li>
+          <li><a href="#">첫번째 카테고리 리스트</a></li>
+        </ul>
+      </div>
+      <aside class="side-menu">
+        <ul>
+          <li><a href="#">카테고리</a></li>
+          <li><a href="#">카테고리</a></li>
+          <li><a href="#">카테고리</a></li>
+          <li><a href="#">카테고리</a></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+  <footer>
+    <h3>안녕 이익전의 블러그얔ㅋㅋ</h3>
+  </footer>
 
 </body>
 </html>
