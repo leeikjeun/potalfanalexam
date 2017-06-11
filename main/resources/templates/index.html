@@ -4,8 +4,9 @@
       >
 <head>
     <title>Blog</title>
-    <link href="/reset.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="/base.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/css/reset.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/css/base.css" rel="stylesheet" type="text/css" media="all" />
+
     <style media="screen">
     .title{
       height: 55px;
@@ -45,33 +46,28 @@
     }
 
     </style>
+    <link href="/css/modal/modal.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
   <header class="base-size">
     <div class="row">
       <h3 class="title"><a href="/index">이익전의 블로그</a></h3>
       <ul class="main-menu">
-        <li><a href="#">로그인</a></li>
-        <li><a href="#">회원가입</a></li>
+        <li><a class="login" href="#">로그인</a></li>
+        <li><a class="sign-up" href="#">회원가입</a></li>
       </ul>
     </div>
   </header>
   <div class="base-size">
     <div class="content-box">
       <div class="content">
-        <ul>
-          <li><a href="#">첫번째 카테고리 리스트</a></li>
-          <li><a href="#">첫번째 카테고리 리스트</a></li>
-          <li><a href="#">첫번째 카테고리 리스트</a></li>
-          <li><a href="#">첫번째 카테고리 리스트</a></li>
-        </ul>
+          <ul th:each="catalog : ${catalogs}">
+              <li><a href="#" th:text="${catalog.getName()}">카테고리</a></li>
+          </ul>
       </div>
       <aside class="side-menu">
-        <ul>
-          <li><a href="#">카테고리</a></li>
-          <li><a href="#">카테고리</a></li>
-          <li><a href="#">카테고리</a></li>
-          <li><a href="#">카테고리</a></li>
+        <ul th:each="blog : ${blogs}">
+          <li><a href="#" th:text="${blog.getTitle()}">카테고리</a></li>
         </ul>
       </aside>
     </div>
@@ -80,5 +76,31 @@
     <h3>안녕 이익전의 블러그얔ㅋㅋ</h3>
   </footer>
 
+  <div id="loginModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form class="" action="#" method="post">
+        아이디 : <input type="text" name="id" value="" />
+        비밀번호 : <input type="password" name="password" value="" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+
+  <div id="signUpModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form class="" action="index.html" method="post">
+        아이디 : <input type="text" name="id" value="" />
+        비밀번호 : <input type="password" name="password" value="" />
+        확인 비밀번호 : <input type="password" name="repassword" value="" />
+        이름 : <input type="text" name="name" value="" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
 </body>
+<script type="text/javascript" src="/js/modal/modal.js"></script>
 </html>

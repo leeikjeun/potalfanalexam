@@ -5,11 +5,13 @@ import kr.ac.jejunu.model.Catalog;
 import kr.ac.jejunu.repository.BlogRepository;
 import kr.ac.jejunu.repository.CatalogRepository;
 import kr.ac.jejunu.repository.CommentRepository;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,12 +30,13 @@ public class MyMainController {
 
     @RequestMapping("/index")
     public String hello(Model model) {
-        Catalog catalog = new Catalog();
-        catalog.setId(1);
-        catalog.setName("test");
+
+        List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
+        Catalog catalog = catalogs.get(0);
         List<Blog> blogs = blogRepository.findByCatalog(catalog);
 
-        model.addAttribute("hi", new String[] {"하이!!!"});
+        model.addAttribute("catalogs",catalogs);
+        model.addAttribute("blogs", blogs);
 
         return "index";
     }

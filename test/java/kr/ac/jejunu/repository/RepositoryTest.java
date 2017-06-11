@@ -10,6 +10,7 @@ import kr.ac.jejunu.model.Blog;
 import kr.ac.jejunu.model.Catalog;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
+import org.apache.commons.collections4.IteratorUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -114,7 +116,15 @@ public class RepositoryTest {
         Catalog catalog = new Catalog();
         catalog.setId(1);
         catalog.setName("test");
+//        Iterator<Catalog> catalogs = catalogRepository.findAll().iterator();
+
+        List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
         List<Blog> blogs = blogRepository.findByCatalog(catalog);
+
+        for (Catalog test : catalogs) {
+            System.out.print(test);
+
+        }
 
         for(Blog blog : blogs){
             System.out.println(blog.getContent());
