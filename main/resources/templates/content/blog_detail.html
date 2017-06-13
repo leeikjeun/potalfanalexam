@@ -1,0 +1,14 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+
+>
+<head>
+    <title>Blog</title>
+</head>
+<body>
+    <h3 th:text="${blog.getTitle()}">제목</h3>
+    <p th:text="${blog.getContent()}">내용</p>
+    <p th:text="${blog.getDate()}">날짜</p>
+    <p th:text="${blog.getUser().getName()}">작성유저</p>
+</body>
+</html>

@@ -2,17 +2,25 @@ package kr.ac.jejunu.spring;
 
 import kr.ac.jejunu.model.Blog;
 import kr.ac.jejunu.model.Catalog;
+import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.BlogRepository;
 import kr.ac.jejunu.repository.CatalogRepository;
 import kr.ac.jejunu.repository.CommentRepository;
+import kr.ac.jejunu.repository.UserRepository;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adaeng on 2017. 6. 9..
@@ -28,16 +36,84 @@ public class MyMainController {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @RequestMapping("/index")
-    public String hello(Model model) {
+    public String index(Model model) {
 
         List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
         Catalog catalog = catalogs.get(0);
         List<Blog> blogs = blogRepository.findByCatalog(catalog);
-
+        User user = null;
+        model.addAttribute("user", user);
         model.addAttribute("catalogs",catalogs);
         model.addAttribute("blogs", blogs);
 
         return "index";
+    }
+
+    @RequestMapping(value = "/index/login", method = RequestMethod.POST)
+    public String logIn(@RequestParam String id, @RequestParam String password, HttpServletResponse res, HttpSession session, Model model) throws IOException {
+
+        System.out.print(id + " " + password);
+        User user =userRepository.findByUserId(id);
+
+        try {
+            if(user.getPassword().equals(password)){
+                session.setAttribute("id", id);
+                return "redirect:/index";
+            }else{
+                res.setContentType("text/html; charset=UTF-8");
+                PrintWriter out = res.getWriter();
+                out.println("<script>alert('비밀번호가 틀렸습니다.'); history.go(-1);</script>");
+                out.flush();
+                return "redirect:/index";
+            }
+        }catch (NullPointerException e){
+            res.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = res.getWriter();
+            out.println("<script>alert('아이디가 존재하지 않습니다.'); history.go(-1);</script>");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/index/logout")
+    public String logOut(HttpSession session){
+
+        session.invalidate();
+
+        return "redirect:/index";
+    }
+
+    @RequestMapping(value = "/blog/details", method = RequestMethod.GET)
+    public String blogDetail(@RequestParam String id, Model model){
+
+
+        Blog blog = blogRepository.findOne(Integer.parseInt(id));
+
+        model.addAttribute("blog", blog);
+
+        return "/content/blog_detail";
+    }
+
+    @RequestMapping(value="/index/blogajax", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> blogChange(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String,Object>();
+        List<Blog> blogs = null;
+        try{
+            Catalog catalog = catalogRepository.findOne((Integer) params.get("catalog"));
+           blogs = blogRepository.findByCatalog(catalog);
+        }catch(Exception e){
+            resultMap.put("message",e.getMessage());
+            return resultMap;
+        }
+        resultMap.put("blogs", blogs);
+        return resultMap;
     }
 }

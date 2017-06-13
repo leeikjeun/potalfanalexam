@@ -6,53 +6,19 @@
     <title>Blog</title>
     <link href="/css/reset.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/css/base.css" rel="stylesheet" type="text/css" media="all" />
-
-    <style media="screen">
-    .title{
-      height: 55px;
-      font-size: 17px;
-      font-weight: 600;
-    }
-
-    .main-menu{
-      height: 55px;
-    }
-
-    .main-menu li{
-      margin-left: 10px;
-      transition: all 0.5s;
-    }
-
-    .main-menu li:hover{
-      background-color: #e1e1e1;
-    }
-
-    a{
-      text-decoration: none;
-      color: black;
-    }
-
-    .content-box{
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .content{
-      width: 75%;
-    }
-
-    .side-menu{
-      width: 25%;
-    }
-
-    </style>
     <link href="/css/modal/modal.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 <body>
   <header class="base-size">
     <div class="row">
       <h3 class="title"><a href="/index">이익전의 블로그</a></h3>
-      <ul class="main-menu">
+      <ul class="main-menu" th:if="${session.id}">
+        <li><a class="log-out" href="/index/logout">로그아웃</a></li>
+        <li><a href="#">등록글보기</a></li>
+      </ul>
+      <ul class="main-menu" th:unless="${session.id}">
         <li><a class="login" href="#">로그인</a></li>
         <li><a class="sign-up" href="#">회원가입</a></li>
       </ul>
@@ -61,13 +27,13 @@
   <div class="base-size">
     <div class="content-box">
       <div class="content">
-          <ul th:each="catalog : ${catalogs}">
-              <li><a href="#" th:text="${catalog.getName()}">카테고리</a></li>
-          </ul>
+        <ul class="blogs" th:each="blog : ${blogs}">
+          <li><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
+        </ul>
       </div>
       <aside class="side-menu">
-        <ul th:each="blog : ${blogs}">
-          <li><a href="#" th:text="${blog.getTitle()}">카테고리</a></li>
+        <ul class="catalogs" th:each="catalog : ${catalogs}">
+          <li><a href="#" th:text="${catalog.getName()}" th:data="${catalog.getId()}" >카테고리</a></li>
         </ul>
       </aside>
     </div>
@@ -81,7 +47,7 @@
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form class="" action="#" method="post">
+      <form class="" action="/index/login" method="post">
         아이디 : <input type="text" name="id" value="" />
         비밀번호 : <input type="password" name="password" value="" />
         <input type="submit" value="Submit" />
@@ -95,7 +61,7 @@
       <form class="" action="index.html" method="post">
         아이디 : <input type="text" name="id" value="" />
         비밀번호 : <input type="password" name="password" value="" />
-        확인 비밀번호 : <input type="password" name="repassword" value="" />
+        확인 비밀번호 : <input type="passwredirectord" name="repassword" value="" />
         이름 : <input type="text" name="name" value="" />
         <input type="submit" value="Submit" />
       </form>
@@ -103,4 +69,9 @@
   </div>
 </body>
 <script type="text/javascript" src="/js/modal/modal.js"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    var ajaxCatalogs = document.querySelectorAll(".catalogs li a");
+
+</script>
 </html>
