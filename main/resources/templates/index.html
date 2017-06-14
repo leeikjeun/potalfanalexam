@@ -24,11 +24,15 @@
       </ul>
     </div>
   </header>
+  <div class="btn-box" th:if="${session.id}">
+    <a href="#"></a>
+    <a href="#"></a>
+  </div>
   <div class="base-size">
     <div class="content-box">
       <div class="content">
-        <ul class="blogs" th:each="blog : ${blogs}">
-          <li><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
+        <ul class="blogs" >
+          <li th:each="blog : ${blogs}"><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
         </ul>
       </div>
       <aside class="side-menu">
@@ -69,9 +73,5 @@
   </div>
 </body>
 <script type="text/javascript" src="/js/modal/modal.js"></script>
-<script type="text/javascript" th:inline="javascript">
-
-    var ajaxCatalogs = document.querySelectorAll(".catalogs li a");
-
-</script>
+<script type="text/javascript" src="/js/ajax/blogListAjax.js"></script>
 </html>

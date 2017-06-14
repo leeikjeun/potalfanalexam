@@ -2,6 +2,7 @@ package kr.ac.jejunu.spring;
 
 import kr.ac.jejunu.model.Blog;
 import kr.ac.jejunu.model.Catalog;
+import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.BlogRepository;
 import kr.ac.jejunu.repository.CatalogRepository;
@@ -103,17 +104,32 @@ public class MyMainController {
 
     @RequestMapping(value="/index/blogajax", method=RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> blogChange(@RequestBody Map<String, Object> params){
-        Map<String, Object> resultMap = new HashMap<String,Object>();
+    public Map<String, List<Blog>> blogChange(@RequestBody Map<String, Object> params){
+        Map<String, List<Blog>> resultMap = new HashMap<String,List<Blog>>();
         List<Blog> blogs = null;
-        try{
-            Catalog catalog = catalogRepository.findOne((Integer) params.get("catalog"));
-           blogs = blogRepository.findByCatalog(catalog);
-        }catch(Exception e){
-            resultMap.put("message",e.getMessage());
-            return resultMap;
-        }
+        Integer id = Integer.parseInt((String) params.get("catalogId"));
+        Catalog catalog = catalogRepository.findOne(id);
+        blogs = blogRepository.findByCatalog(catalog);
+
         resultMap.put("blogs", blogs);
         return resultMap;
     }
+
+    @RequestMapping(value = "/index/catagolyupload", method=RequestMethod.POST)
+    public String catagolyUpload(Model model) {
+
+        List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
+        Catalog catalog = catalogs.get(0);
+        List<Blog> blogs = blogRepository.findByCatalog(catalog);
+        User user = null;
+        model.addAttribute("user", user);
+        model.addAttribute("catalogs",catalogs);
+        model.addAttribute("blogs", blogs);
+
+        return "index";
+    }
+
+
+
+
 }
