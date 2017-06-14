@@ -92,7 +92,6 @@ public class MyMainController {
     @RequestMapping(value = "/blog/details", method = RequestMethod.GET)
     public String blogDetail(@RequestParam String id, Model model){
 
-
         Blog blog = blogRepository.findOne(Integer.parseInt(id));
         List<Comment> comments = commentRepository.findByBlog(blog);
         model.addAttribute("blog", blog);
@@ -115,40 +114,7 @@ public class MyMainController {
         return "index";
     }
 
-    @RequestMapping(value="/index/blogajax", method=RequestMethod.POST)
-    @ResponseBody
-    public Map<String, List<Blog>> blogChange(@RequestBody Map<String, Object> params){
-        Map<String, List<Blog>> resultMap = new HashMap<String,List<Blog>>();
-        List<Blog> blogs = null;
-        Integer id = Integer.parseInt((String) params.get("catalogId"));
-        Catalog catalog = catalogRepository.findOne(id);
-        blogs = blogRepository.findByCatalog(catalog);
 
-        resultMap.put("blogs", blogs);
-        return resultMap;
-    }
-
-    @RequestMapping(value="/detail/commentajax", method=RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> commentAjax(@RequestBody Map<String, Object> params){
-        Map<String, Object> resultMap = new HashMap<String,Object>();
-        Date date = new Date();
-
-        Integer userId = Integer.parseInt((String) params.get("user_id"));
-        Integer blogId = Integer.parseInt((String) params.get("blog_id"));
-        User user = userRepository.findOne(userId);
-        Blog blog = blogRepository.findOne(blogId);
-        Comment comment = new Comment();
-        comment.setUser(user);
-        comment.setBlog(blog);
-        comment.setContent((String) params.get("content"));
-        comment.setDateComment(date);
-        commentRepository.save(comment);
-
-        resultMap.put("date", date);
-
-        return resultMap;
-    }
 
 
 

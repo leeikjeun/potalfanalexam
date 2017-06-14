@@ -110,13 +110,13 @@ public class HelloController {
 //        return "hi";
 //    }
 
-    @GetMapping("/sessionattributes/get")
-    public String hello10() {
-        return "hi";
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public String handleException(NullPointerException e) {
-        return "error";
-    }
+//    @GetMapping("/sessionattributes/get")
+//    public String hello10() {
+//        return "hi";
+//    }
+//
+//    @ExceptionHandler(NullPointerException.class)
+//    public String handleException(NullPointerException e) {
+//        return "error";
+//    }
 }

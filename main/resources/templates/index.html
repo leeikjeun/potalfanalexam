@@ -25,8 +25,7 @@
     </div>
   </header>
   <div class="btn-box" th:if="${session.id}">
-    <a href="#"></a>
-    <a href="#"></a>
+    <a class="catalog-modal" href="#">카테고리 추가하기</a>
   </div>
   <div class="base-size">
     <div class="content-box">
@@ -58,20 +57,32 @@
       </form>
     </div>
   </div>
-
+  
   <div id="signUpModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form class="" action="index.html" method="post">
-        아이디 : <input type="text" name="id" value="" />
-        비밀번호 : <input type="password" name="password" value="" />
-        확인 비밀번호 : <input type="passwredirectord" name="repassword" value="" />
-        이름 : <input type="text" name="name" value="" />
-        <input type="submit" value="Submit" />
-      </form>
+        아이디 : <input class="sign-up-id" type="text" name="id" value="" /><button class="check-overlap" type="button" name="button">중복확인</button>
+        비밀번호 : <input class="sign-up-pass" type="password" name="password" value="" />
+        확인 비밀번호 : <input class="sign-up-pass-re" type="password" name="repassword" value="" />
+        이름 : <input class="name" type="text" name="name" value="" />
+        <button class="submit-btn" type="button" name="button">가입하기</button>
     </div>
   </div>
+
+  <div id="catalogModel" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      카탈로그 제목 : <input type="text" class="catalogInput" />
+      <button class="catalog-submit-btn" type="button" name="button">등록하기</button>
+    </div>
+
+  </div>
+
 </body>
 <script type="text/javascript" src="/js/modal/modal.js"></script>
-<script type="text/javascript" src="/js/ajax/blogListAjax.js"></script>
+<script type="text/javascript" src="/js/ajax/indexAjax.js"></script>
+<script type="text/javascript">
+
+
+</script>
 </html>

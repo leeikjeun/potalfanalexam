@@ -43,6 +43,10 @@
                 url:'/detail/commentajax',
                 type:'POST',
                 success:function(response){
+                  var today = new Date("1990-05-20 05:31:11");
+
+                  today.setSeconds(response.date);
+
                   var liTag = document.createElement('li');
                   var h3Tag = document.createElement('h3');
                   var pContentTag = document.createElement('p');
@@ -51,7 +55,7 @@
                   h3Tag.innerHTML = "[[${session.id}]]";
                   pContentTag.innerHTML = data['content'];
                   pDateTag.innerHTML = response.date;
-                  console.log(response.date);
+                  console.log(today);
                   liTag.appendChild(h3Tag);
                   liTag.appendChild(pContentTag);
                   liTag.appendChild(pDateTag);
