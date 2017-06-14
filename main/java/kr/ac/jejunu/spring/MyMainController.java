@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by adaeng on 2017. 6. 9..
@@ -63,6 +60,7 @@ public class MyMainController {
         try {
             if(user.getPassword().equals(password)){
                 session.setAttribute("id", id);
+                session.setAttribute("key",user.getId());
                 return "redirect:/index";
             }else{
                 res.setContentType("text/html; charset=UTF-8");
@@ -96,10 +94,25 @@ public class MyMainController {
 
 
         Blog blog = blogRepository.findOne(Integer.parseInt(id));
-
+        List<Comment> comments = commentRepository.findByBlog(blog);
         model.addAttribute("blog", blog);
+        model.addAttribute("replry",comments);
 
         return "/content/blog_detail";
+    }
+
+    @RequestMapping(value = "/index/catagolyupload", method=RequestMethod.POST)
+    public String catagolyUpload(Model model) {
+
+        List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
+        Catalog catalog = catalogs.get(0);
+        List<Blog> blogs = blogRepository.findByCatalog(catalog);
+        User user = null;
+        model.addAttribute("user", user);
+        model.addAttribute("catalogs",catalogs);
+        model.addAttribute("blogs", blogs);
+
+        return "index";
     }
 
     @RequestMapping(value="/index/blogajax", method=RequestMethod.POST)
@@ -115,18 +128,26 @@ public class MyMainController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/index/catagolyupload", method=RequestMethod.POST)
-    public String catagolyUpload(Model model) {
+    @RequestMapping(value="/detail/commentajax", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> commentAjax(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String,Object>();
+        Date date = new Date();
 
-        List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
-        Catalog catalog = catalogs.get(0);
-        List<Blog> blogs = blogRepository.findByCatalog(catalog);
-        User user = null;
-        model.addAttribute("user", user);
-        model.addAttribute("catalogs",catalogs);
-        model.addAttribute("blogs", blogs);
+        Integer userId = Integer.parseInt((String) params.get("user_id"));
+        Integer blogId = Integer.parseInt((String) params.get("blog_id"));
+        User user = userRepository.findOne(userId);
+        Blog blog = blogRepository.findOne(blogId);
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setBlog(blog);
+        comment.setContent((String) params.get("content"));
+        comment.setDateComment(date);
+        commentRepository.save(comment);
 
-        return "index";
+        resultMap.put("date", date);
+
+        return resultMap;
     }
 
 

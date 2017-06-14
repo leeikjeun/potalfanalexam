@@ -36,8 +36,8 @@
         </ul>
       </div>
       <aside class="side-menu">
-        <ul class="catalogs" th:each="catalog : ${catalogs}">
-          <li><a href="#" th:text="${catalog.getName()}" th:data="${catalog.getId()}" >카테고리</a></li>
+        <ul class="catalogs">
+          <li th:each="catalog : ${catalogs}"><a href="#" th:text="${catalog.getName()}" th:data="${catalog.getId()}" >카테고리</a></li>
         </ul>
       </aside>
     </div>

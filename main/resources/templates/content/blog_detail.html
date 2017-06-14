@@ -4,6 +4,7 @@
 >
 <head>
     <title>Blog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
     <h3 th:text="${blog.getTitle()}">제목</h3>
@@ -12,16 +13,54 @@
     <p th:text="${blog.getUser().getName()}">작성유저</p>
 
     <div class="reply-box">
-      <input type="text" name="reply_text">
+      <input class="content" type="text" name="reply_content"  />
       <div>
         <ul class="replis">
-          <li th:each="relpy : ${relpy}">
-            <h3 th:text = "${relpy.getTitle()}">제목</h3>
+          <li th:each="relpy : ${replry}">
+            <h3 th:text = "${relpy.getUser().getUserId()}">제목</h3>
             <p th:text = "${relpy.getContent()}">내용</p>
-            <p thLtext = "${relpy.getDateComment()}">날짜</p>
+            <p th:text = "${relpy.getDateComment()}">날짜</p>
           </li>
         </ul>
       </div>
     </div>
 </body>
+<script type="text/javascript" th:inline="javascript">
+    var addReply = document.querySelector(".replis");
+    var relpyContent = document.querySelector('.content');
+
+    $('.reply-box input').on('keydown', function(e) {
+        if (e.which == 13) {
+            var data = {};
+            data["user_id"] = "[[${session.key}]]";
+            data["blog_id"] = "[[${blog.getId()}]]";
+            data["content"] = relpyContent.value;
+            relpyContent.value = "";
+            $.ajax({
+                contentType:'application/json',
+                dataType:'json',
+                data:JSON.stringify(data),
+                url:'/detail/commentajax',
+                type:'POST',
+                success:function(response){
+                  var liTag = document.createElement('li');
+                  var h3Tag = document.createElement('h3');
+                  var pContentTag = document.createElement('p');
+                  var pDateTag = document.createElement('p');
+
+                  h3Tag.innerHTML = "[[${session.id}]]";
+                  pContentTag.innerHTML = data['content'];
+                  pDateTag.innerHTML = response.date;
+                  console.log(response.date);
+                  liTag.appendChild(h3Tag);
+                  liTag.appendChild(pContentTag);
+                  liTag.appendChild(pDateTag);
+
+                  addReply.appendChild(liTag);
+                },
+            });
+        }
+    });
+
+</script>
 </html>
