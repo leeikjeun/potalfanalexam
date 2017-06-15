@@ -126,4 +126,17 @@ public class AjaxController {
 
         return resultMap;
     }
+
+    @RequestMapping(value="/index/deleteblog", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteBlogAjax(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String,Object>();
+
+        int key = Integer.parseInt((String) params.get("blog_id"));
+        blogRepository.delete(key);
+
+        resultMap.put("deleteMsg","삭제 완료");
+
+        return resultMap;
+    }
 }

@@ -1,14 +1,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 
-
-
-
+    <ul class="user-write-blogs">
+        <li th:each="blog : ${blogs}">
+            <a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a>
+            <button class="delete-blog-btn" th:data="${blog.getId()}">삭제</button>
+            <a th:href="@{/user/revision(id=${blog.getId()})}">수정하기</a>
+        </li>
+    </ul>
 
 </body>
+<script type="text/javascript" th:inline="javascript">
+    $('.delete-blog-btn').click(function(e){
+        var data = {};
+        data["blog_id"] = e.target.getAttribute("data");
+        console.log(e.target.getAttribute("data"));
+        e.target.parentNode.innerHTML = "";
+        $.ajax({
+            contentType:'application/json',
+            dataType:'json',
+            data:JSON.stringify(data),
+            url:'/index/deleteblog',
+            type:'POST',
+            success:function(response){
+                alert(response.deleteMsg);
+            },
+        });
+    });
+
+</script>
 </html>

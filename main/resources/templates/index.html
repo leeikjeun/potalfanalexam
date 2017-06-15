@@ -12,80 +12,80 @@
 </head>
 <body>
   <header class="base-size">
-    <div class="row">
-      <h3 class="title"><a href="/index">이익전의 블로그</a></h3>
-      <ul class="main-menu" th:if="${session.id}">
-        <li><a class="log-out" href="/index/logout">로그아웃</a></li>
-        <li><a href="#">등록글보기</a></li>
-      </ul>
-      <ul class="main-menu" th:unless="${session.id}">
-        <li><a class="login" href="#">로그인</a></li>
-        <li><a class="sign-up" href="#">회원가입</a></li>
-      </ul>
-    </div>
+        <div class="row">
+              <h3 class="title"><a href="/index">이익전의 블로그</a></h3>
+              <ul class="main-menu" th:if="${session.id}">
+                    <li><a class="log-out" href="/index/logout">로그아웃</a></li>
+                    <li><a href="/index/userwrite">등록글보기</a></li>
+              </ul>
+              <ul class="main-menu" th:unless="${session.id}">
+                    <li><a class="login" href="#">로그인</a></li>
+                    <li><a class="sign-up" href="#">회원가입</a></li>
+              </ul>
+        </div>
   </header>
+
   <div class="btn-box" th:if="${session.id}">
-    <a class="catalog-modal" href="#">카테고리 추가하기</a>
+        <a class="catalog-modal" href="#">카테고리 추가하기</a>
   </div>
   <div class="base-size">
-    <div class="content-box">
-      <div class="content">
-        <ul class="blogs" >
-          <li th:each="blog : ${blogs}"><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
-        </ul>
-        <div class="blog-add-box">
-          <a th:href="@{/blog/upload(id=${blogs[0].getCatalog().getId()})}" >블러그 추가하기</a>
+        <div class="content-box">
+              <div class="content">
+                    <ul class="blogs" >
+                          <li th:each="blog : ${blogs}"><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
+                    </ul>
+                    <div class="blog-add-box">
+                          <a th:href="@{/blog/upload(id=${blogs[0].getCatalog().getId()})}" >블러그 추가하기</a>
+                    </div>
+              </div>
+              <aside class="side-menu">
+                    <ul class="catalogs">
+                          <li th:each="catalog : ${catalogs}"><a href="#" th:text="${catalog.getName()}" th:data="${catalog.getId()}" >카테고리</a></li>
+                    </ul>
+              </aside>
         </div>
-      </div>
-      <aside class="side-menu">
-        <ul class="catalogs">
-          <li th:each="catalog : ${catalogs}"><a href="#" th:text="${catalog.getName()}" th:data="${catalog.getId()}" >카테고리</a></li>
-        </ul>
-      </aside>
-    </div>
   </div>
-  <footer>
-    <h3>안녕 이익전의 블러그얔ㅋㅋ</h3>
-  </footer>
 
   <div id="loginModal" class="modal">
 
-    <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <form class="" action="/index/login" method="post">
-        아이디 : <input type="text" name="id" value="" />
-        비밀번호 : <input type="password" name="password" value="" />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+        <!-- Modal content -->
+        <div class="modal-content">
+              <span class="close">&times;</span>
+              <form class="" action="/index/login" method="post">
+                    아이디 : <input type="text" name="id" value="" />
+                    비밀번호 : <input type="password" name="password" value="" />
+                    <input type="submit" value="Submit" />
+              </form>
+        </div>
   </div>
-  
+
   <div id="signUpModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-        아이디 : <input class="sign-up-id" type="text" name="id" value="" /><button class="check-overlap" type="button" name="button">중복확인</button>
-        비밀번호 : <input class="sign-up-pass" type="password" name="password" value="" />
-        확인 비밀번호 : <input class="sign-up-pass-re" type="password" name="repassword" value="" />
-        이름 : <input class="name" type="text" name="name" value="" />
-        <button class="submit-btn" type="button" name="button">가입하기</button>
-    </div>
+        <div class="modal-content">
+              <span class="close">&times;</span>
+              아이디 : <input class="sign-up-id" type="text" name="id" value="" /><button class="check-overlap" type="button" name="button">중복확인</button>
+              비밀번호 : <input class="sign-up-pass" type="password" name="password" value="" />
+              확인 비밀번호 : <input class="sign-up-pass-re" type="password" name="repassword" value="" />
+              이름 : <input class="name" type="text" name="name" value="" />
+              <button class="submit-btn" type="button" name="button">가입하기</button>
+        </div>
   </div>
 
   <div id="catalogModel" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      카탈로그 제목 : <input type="text" class="catalogInput" />
-      <button class="catalog-submit-btn" type="button" name="button">등록하기</button>
-    </div>
+        <div class="modal-content">
+              <span class="close">&times;</span>
+              카탈로그 제목 : <input type="text" class="catalogInput" />
+              <button class="catalog-submit-btn" type="button" name="button">등록하기</button>
+        </div>
 
   </div>
+  <footer>
+        <h3>안녕 이익전의 블러그얔ㅋㅋ</h3>
+  </footer>
 
 </body>
 <script type="text/javascript" src="/js/modal/modal.js"></script>
 <script type="text/javascript" src="/js/ajax/indexAjax.js"></script>
 <script type="text/javascript" th:inline="javascript">
-
 
 </script>
 </html>

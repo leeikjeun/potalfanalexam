@@ -123,10 +123,7 @@ public class MyMainController {
 
     @RequestMapping(value = "/blog/formupload", method = RequestMethod.POST)
     public String tormFormUpload(@RequestParam String title, @RequestParam String content, @RequestParam String user_id, @RequestParam String catalog_id){
-//        System.out.println(title);
-//        System.out.println(content);
-//        System.out.println(user_id);
-//        System.out.println(catalog_id);
+
         User user = userRepository.findOne(Integer.parseInt(user_id));
         Catalog catalog = catalogRepository.findOne(Integer.parseInt(catalog_id));
         Blog blog = new Blog();
@@ -140,6 +137,37 @@ public class MyMainController {
         return "redirect:/index";
     }
 
+    @RequestMapping("/index/userwrite")
+    public String userWriteBlog(Model model,HttpSession session){
 
+        int userId = (int) session.getAttribute("key");
+
+        User user = userRepository.findOne(userId);
+
+        List<Blog> blogs = blogRepository.findByUser(user);
+
+        model.addAttribute("blogs",blogs);
+
+        return "usercontent/userwrite";
+    }
+
+    @RequestMapping(value = "/user/revision", method = RequestMethod.GET)
+    public String userRevision(@RequestParam String id,Model model){
+        Blog blog = blogRepository.findOne(Integer.parseInt(id));
+
+        model.addAttribute("blog",blog);
+        return "usercontent/revision";
+    }
+
+    @RequestMapping(value = "/user/revision", method = RequestMethod.POST)
+    public  String userRevisionUpload(@RequestParam String title, @RequestParam String content, @RequestParam String blog_id){
+
+        Blog blog = blogRepository.findOne(Integer.parseInt(blog_id));
+        blog.setTitle(title);
+        blog.setContent(content);
+        blogRepository.save(blog);
+
+        return "redirect:/index/userwrite";
+    }
 
 }

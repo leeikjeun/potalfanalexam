@@ -148,5 +148,16 @@ public class RepositoryTest {
 //        assertThat(check.getName(),is(user.getName()));
     }
 
+    @Test
+    public void checkUpdateBlog(){
+        Blog fisrt = blogRepository.findOne(1);
+
+        fisrt.setTitle("change");
+
+        Blog compare = blogRepository.save(fisrt);
+        assertThat(compare.getId(),is(fisrt.getId()));
+
+    }
+
 
 }

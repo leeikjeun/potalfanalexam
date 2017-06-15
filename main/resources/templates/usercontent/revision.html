@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+
+>
+<head>
+    <title>Blog</title>
+    <style>
+        .input-not-view{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="main-menu" th:if="${session.id}">
+    <form action="/user/revision" class="upload-form" method="post">
+        제목 : <input type="text" name="title" th:value="${blog.getTitle()}"/>
+        내용 : <textarea name="content" th:text="${blog.getContent()}" />
+        <input class="input-not-view" type="text" name="blog_id" th:value="${blog.getId()}" />
+        <input type="submit" value="전송" />
+    </form>
+</div>
+<div th:unless="${session.id}">
+    잘못된 접근입니다.
+</div>
+</body>
+</html>
