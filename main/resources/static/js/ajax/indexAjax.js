@@ -1,31 +1,36 @@
 
     var blogsBox = document.querySelector(".blogs");
+    var blogAddBox = document.querySelector(".blog-add-box");
     $('.catalogs li a').click(function(e){
 
-    var data = {};
-     data["catalogId"] = e.target.getAttribute("data");
+        var data = {};
+        data["catalogId"] = e.target.getAttribute("data");
+        blogAddBox.innerHTML = "";
+        var toUploadBtn = document.createElement("a");
+        toUploadBtn.setAttribute("href","/blog/upload?id="+e.target.getAttribute("data"));
+        toUploadBtn.innerHTML = "블러그 추가하기";
+        blogAddBox.appendChild(toUploadBtn);
+         $.ajax({
+             contentType:'application/json',
+             dataType:'json',
+             data:JSON.stringify(data),
+             url:'/index/blogajax',
+             type:'POST',
+             success:function(response){
+                 var list = response.blogs;
+                 blogsBox.innerHTML = "";
+                 for(var index in list){
+                     console.log();
+                     var liTag = document.createElement('li');
+                     var aTag = document.createElement('a');
+                     aTag.setAttribute("href","/blog/details?id="+list[index].id);
+                     aTag.innerHTML = list[index].title;
+                     liTag.appendChild(aTag);
+                     blogsBox.appendChild(liTag);
+                 }
 
-     $.ajax({
-         contentType:'application/json',
-         dataType:'json',
-         data:JSON.stringify(data),
-         url:'/index/blogajax',
-         type:'POST',
-         success:function(response){
-             var list = response.blogs;
-             blogsBox.innerHTML = "";
-             for(var index in list){
-                 console.log();
-                 var liTag = document.createElement('li');
-                 var aTag = document.createElement('a');
-                 aTag.setAttribute("href","/blog/details?id="+list[index].id);
-                 aTag.innerHTML = list[index].title;
-                 liTag.appendChild(aTag);
-                 blogsBox.appendChild(liTag);
-             }
-
-             },
-         });
+                 },
+             });
 });
 
 

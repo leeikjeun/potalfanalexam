@@ -114,8 +114,31 @@ public class MyMainController {
         return "index";
     }
 
+    @RequestMapping(value = "/blog/upload", method = RequestMethod.GET)
+    public String blogUpload(@RequestParam String id, Model model){
 
+        model.addAttribute("catalog_id",id);
+        return "/content/blog_upload";
+    }
 
+    @RequestMapping(value = "/blog/formupload", method = RequestMethod.POST)
+    public String tormFormUpload(@RequestParam String title, @RequestParam String content, @RequestParam String user_id, @RequestParam String catalog_id){
+//        System.out.println(title);
+//        System.out.println(content);
+//        System.out.println(user_id);
+//        System.out.println(catalog_id);
+        User user = userRepository.findOne(Integer.parseInt(user_id));
+        Catalog catalog = catalogRepository.findOne(Integer.parseInt(catalog_id));
+        Blog blog = new Blog();
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setCatalog(catalog);
+        blog.setUser(user);
+
+        blogRepository.save(blog);
+
+        return "redirect:/index";
+    }
 
 
 

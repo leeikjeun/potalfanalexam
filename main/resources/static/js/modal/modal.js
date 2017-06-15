@@ -24,10 +24,10 @@ if(signUp != null){
         signUpModal.style.display = "block";
     }
 }
-
-
-catalog.onclick = function () {
-    catalogModal.style.display = "block";
+if(catalog != null){
+    catalog.onclick = function () {
+        catalogModal.style.display = "block";
+    }
 }
 
 // When the user clicks on <span> (x), close the modal

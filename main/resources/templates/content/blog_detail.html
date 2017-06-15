@@ -13,7 +13,12 @@
     <p th:text="${blog.getUser().getName()}">작성유저</p>
 
     <div class="reply-box">
-      <input class="content" type="text" name="reply_content"  />
+        <div th:if="${session.id}" >\
+            <input class="content" type="text" name="reply_content"  />
+        </div>
+        <div th:unless="${session.id}">
+            댓글은 로그인 해야 넣을수 있습니다.
+        </div>
       <div>
         <ul class="replis">
           <li th:each="relpy : ${replry}">

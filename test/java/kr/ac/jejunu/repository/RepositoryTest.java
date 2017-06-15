@@ -94,10 +94,11 @@ public class RepositoryTest {
 
     @Test
     public void createComment(){
-
+        User user = userRepository.findOne(1);
         Comment comment = new Comment();
-        comment.setTitle("test title");
+
         comment.setContent("test content");
+        comment.setUser(user);
         comment.setBlog(blogRepository.findOne(1));
         comment.setDateComment(new Date());
 
@@ -105,7 +106,7 @@ public class RepositoryTest {
         Comment check = commentRepository.findOne(id);
 
         assertThat(check.getId(),is(id));
-        assertThat(check.getTitle(),is(comment.getTitle()));
+
         assertThat(check.getContent(),is(comment.getContent()));
         assertThat(check.getBlog().getId(),is(comment.getBlog().getId()));
 //        assertThat(check.getDateComment(),is(comment.getDateComment())); 시간이 잘들어가나 출력되면 값이 봐꾸네;; 어케 해야하지?
@@ -118,8 +119,11 @@ public class RepositoryTest {
         catalog.setName("test");
 //        Iterator<Catalog> catalogs = catalogRepository.findAll().iterator();
 
+
+
         List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());
         List<Blog> blogs = blogRepository.findByCatalog(catalog);
+//        List<Comment> comments = commentRepository.findByCommentAll(blogs.get(1));
 
         for (Catalog test : catalogs) {
             System.out.print(test);
@@ -130,8 +134,19 @@ public class RepositoryTest {
             System.out.println(blog.getContent());
         }
 
+//        for(Comment comment : comments){
+//            System.out.println(comment.getContent());
+//        }
+
     }
 
+    @Test
+    public void checkNullPoint(){
+//        User check = userRepository.findOne(1);
+        User user = userRepository.findByUserId("aaa");
+//        System.out.print(user.getName());
+//        assertThat(check.getName(),is(user.getName()));
+    }
 
 
 }

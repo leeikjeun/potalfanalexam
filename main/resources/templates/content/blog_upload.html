@@ -4,8 +4,24 @@
 >
 <head>
     <title>Blog</title>
+    <style>
+        .input-not-view{
+            display: none;
+        }
+    </style>
 </head>
 <body>
-
+    <div class="main-menu" th:if="${session.id}">
+        <form action="/blog/formupload" class="upload-form" method="post">
+            제목 : <input type="text" name="title"/>
+            내용 : <textarea name="content" />
+            <input class="input-not-view" type="text" name="user_id" th:value="${session.key}" />
+            <input class="input-not-view" type="text" name="catalog_id" th:value="${catalog_id}" />
+            <input type="submit" value="전송" />
+        </form>
+    </div>
+    <div class="main-menu" th:unless="${session.id}">
+        로그인해야 등록 가능!
+    </div>
 </body>
 </html>
