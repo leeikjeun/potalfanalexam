@@ -37,7 +37,7 @@ public class MyMainController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping("/index")
+    @RequestMapping(value={"", "/", "/index"})
     public String index(Model model) {
 
         List<Catalog> catalogs = IteratorUtils.toList(catalogRepository.findAll().iterator());

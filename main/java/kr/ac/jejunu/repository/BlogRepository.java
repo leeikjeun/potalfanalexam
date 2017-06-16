@@ -15,5 +15,5 @@ import java.util.List;
 public interface BlogRepository extends CrudRepository<Blog,Integer> {
     public List<Blog> findByCatalog(Catalog catalog);
     public List<Blog> findByUser(User user);
-    
+
 }
