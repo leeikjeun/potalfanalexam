@@ -8,6 +8,7 @@
 
     <ul class="user-write-blogs">
         <li th:each="blog : ${blogs}">
+            카탈로그 : <h3 th:text="${blog.getCatalog().getName()}"></h3>
             <a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a>
             <button class="delete-blog-btn" th:data="${blog.getId()}">삭제</button>
             <a th:href="@{/user/revision(id=${blog.getId()})}">수정하기</a>

@@ -13,8 +13,8 @@
     <p th:text="${blog.getUser().getName()}">작성유저</p>
 
     <div class="reply-box">
-        <div th:if="${session.id}" >\
-            <input class="content" type="text" name="reply_content"  />
+        <div th:if="${session.id}" >
+            댓글 : <input class="content" type="text" name="reply_content"  />
         </div>
         <div th:unless="${session.id}">
             댓글은 로그인 해야 넣을수 있습니다.
@@ -30,6 +30,7 @@
       </div>
     </div>
 </body>
+<script type="text/javascript" src="/js/getime.js"></script>
 <script type="text/javascript" th:inline="javascript">
     var addReply = document.querySelector(".replis");
     var relpyContent = document.querySelector('.content');
@@ -48,19 +49,16 @@
                 url:'/detail/commentajax',
                 type:'POST',
                 success:function(response){
-                  var today = new Date("1990-05-20 05:31:11");
-
-                  today.setSeconds(response.date);
 
                   var liTag = document.createElement('li');
                   var h3Tag = document.createElement('h3');
                   var pContentTag = document.createElement('p');
                   var pDateTag = document.createElement('p');
 
-                  h3Tag.innerHTML = "[[${session.id}]]";
+                  h3Tag.innerHTML = "[[${session.id}]]".split("'")[1];
                   pContentTag.innerHTML = data['content'];
-                  pDateTag.innerHTML = response.date;
-                  console.log(today);
+                  pDateTag.innerHTML = getTimeStamp(response.date);
+
                   liTag.appendChild(h3Tag);
                   liTag.appendChild(pContentTag);
                   liTag.appendChild(pDateTag);
@@ -70,6 +68,7 @@
             });
         }
     });
+
 
 </script>
 </html>
