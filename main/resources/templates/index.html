@@ -8,7 +8,28 @@
     <link href="/css/base.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/css/modal/modal.css" rel="stylesheet" type="text/css" media="all" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style media="screen">
 
+      .blog-content{
+        height: 40px;
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        transition: all 0.5s;
+      }
+
+      .blog-content a{
+        width: 100%;
+      }
+
+      .blog-content:hover{
+        background-color: #e1e1e1;
+      }
+
+      footer{
+        text-align: center;
+      }
+    </style>
 </head>
 <body>
   <header class="base-size">
@@ -32,7 +53,7 @@
         <div class="content-box">
               <div class="content">
                     <ul class="blogs" >
-                          <li th:each="blog : ${blogs}"><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
+                          <li class="blog-content" th:each="blog : ${blogs}"><a th:href="@{/blog/details(id=${blog.getId()})}" th:text="${blog.getTitle()}">블러그</a></li>
                     </ul>
                     <div class="blog-add-box">
                           <a th:href="@{/blog/upload(id=${blogs[0].getCatalog().getId()})}" >블러그 추가하기</a>
