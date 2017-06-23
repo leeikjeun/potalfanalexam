@@ -22,6 +22,7 @@
                  for(var index in list){
                      console.log();
                      var liTag = document.createElement('li');
+                     liTag.setAttribute("class","blog-content");
                      var aTag = document.createElement('a');
                      aTag.setAttribute("href","/blog/details?id="+list[index].id);
                      aTag.innerHTML = list[index].title;
